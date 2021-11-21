@@ -1,0 +1,24 @@
+<ion-app>
+  <ion-split-pane contentId="main-content">
+    <ion-menu id="mainMenu" side="start" contentId="main-content" type="reveal">
+      <ion-content>
+        <ion-header>
+          <ion-toolbar color="primary">
+            <ion-title>Assessment App</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <ion-list id="inbox-list">
+          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+              <fa-icon *ngIf="p.icon =='fausergraduate'" slot="start" [icon]="fausergraduate"></fa-icon>
+              <fa-icon *ngIf="p.icon =='faschool'" slot="start" [icon]="faschool"></fa-icon>
+              <fa-icon *ngIf="p.icon =='fagraduationcap'" slot="start" [icon]="fagraduationcap"></fa-icon>
+              <ion-label>{{ p.title }}</ion-label>
+            </ion-item>
+          </ion-menu-toggle>
+        </ion-list>
+      </ion-content>
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
+</ion-app>

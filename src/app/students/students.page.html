@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Students</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div style="padding-top: 10px;">
+
+      <ion-toolbar>
+        <ion-searchbar (ionChange)="filterStudents($event)" debounce="500" animated placeholder="Find student by name"></ion-searchbar>
+      </ion-toolbar>
+
+  </div>
+  <div style="margin: 10px;"></div>
+  <div *ngIf="noStudents">No students available.</div>
+  <ion-list *ngFor="let p of filteredStudents; let i = index">
+    <ion-item style="padding-right: 20px;">
+      <ion-avatar slot="start">
+        <img src="../../assets/avatar.png">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{p.lastname}}, {{p.firstname}}</h2>
+        <p>Date of birth: {{p.dateofbirth}}</p>
+        <ion-button (click)="navigateToUrl(p.id, 'Details')"  color="primary">Details</ion-button>  
+        <ion-button (click)="navigateToUrl(p.id, 'Edit')"  color="secondary">Edit</ion-button> 
+        <ion-button (click)="navigateToUrl(p.id, 'Enroll')"  color="dark">Enroll</ion-button> 
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="padding: 10px;">
+    <ion-fab-button (click)="navigateToUrl(0, 'Create')">
+      <ion-icon name="person"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

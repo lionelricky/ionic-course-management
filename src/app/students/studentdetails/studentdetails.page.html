@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title *ngIf="pageMode !='Details'">{{pageMode}} student</ion-title>
+    <ion-title *ngIf="pageMode =='Details' && student">{{pageMode}} for {{student.firstname}}, {{student.lastname}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="pageMode !='Details'">
+    <form [formGroup]="studentForm" (ngSubmit)="updateStudent()" novalidate>
+      <ion-item lines="full">
+        <ion-label position="floating">First name</ion-label>
+        <ion-input formControlName="firstname" type="text" required></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Last name</ion-label>
+        <ion-input formControlName="lastname" type="text" required></ion-input>
+      </ion-item>
+      <ion-item lines="full">
+        <ion-label position="floating">Date of birth</ion-label>
+        <ion-datetime (ionChange)="getDate($event)" formControlName="dob" [value]="defaultDate"></ion-datetime>
+      </ion-item>
+      <ion-button *ngIf="pageMode !='Details'" type="submit" color="primary">{{pageMode}}</ion-button>
+      <ion-button *ngIf="pageMode =='Edit'"(click)="deleteStudent(id)" color="danger">Delete</ion-button> 
+      <ion-button (click)="returnToStudentsPage()" color="secondary">Go back</ion-button>
+    </form>
+</ion-content>
+<ion-content *ngIf="pageMode =='Details' && student">
+  <ion-item lines="full">
+    <ion-label>Date of birth</ion-label>
+    <p>{{student.dateofbirth}}</p>
+  </ion-item>
+  <div *ngIf="enrollment && enrollment.length">
+    <h3 style="padding: 0 15px;">Enrolled courses</h3>
+    <ion-list *ngFor="let e of enrollment">
+      <ion-item style="padding-right: 20px;">
+        <ion-label>
+          <h2>{{e.name}}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+  <ion-button (click)="returnToStudentsPage()" color="secondary">Go back</ion-button>
+</ion-content>
