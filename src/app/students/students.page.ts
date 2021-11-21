@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { HttpClient,HttpEventType,HttpHeaders  } from '@angular/common/http';
 import { Student } from '../models/student';
 import { StudentService } from 'src/app/service/student.service';
-import { ApiService } from '../service/api.service';
 import { ToastController } from '@ionic/angular';
+import { EnrollmentService } from '../service/enrollment.service';
+
 @Component({
   selector: 'app-students',
   templateUrl: './students.page.html',
@@ -13,7 +12,10 @@ import { ToastController } from '@ionic/angular';
 })
 export class StudentsPage implements OnInit{
 
-  constructor(private router: Router, private http: HttpClient, private studentService: StudentService, private apiService: ApiService, private toastController: ToastController) { }
+  constructor(private router: Router, 
+    private studentService: StudentService, 
+    private toastController: ToastController,
+    private enrollmentService: EnrollmentService) { }
 
   students:Student[];
   filteredStudents: Student[];
@@ -47,6 +49,11 @@ export class StudentsPage implements OnInit{
   navigateToUrl(id:number, mode:string){
     this.studentService.setPageMode(mode);
     this.router.navigateByUrl("/students/studentdetails/"+id)
+  }
+
+  navigateToEnrollment(id:number){
+    this.enrollmentService.setup(id,0);
+    this.router.navigateByUrl("/enrollment")
   }
 
   getAllStudentData(){

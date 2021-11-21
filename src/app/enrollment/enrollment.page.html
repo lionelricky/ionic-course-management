@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Enrollment</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    {{typeSelected}}
+  </ion-item>
+  <form [formGroup]="enrollmentForm" (ngSubmit)="updateEnrollment()" novalidate>
+    <ion-item *ngIf="students && students.length && !student">
+      <ion-label>Student</ion-label>
+      <ion-select [compareWith]="compareStudentWith" formControlName="studentid" placeholder="Select student" required multiple='false'>
+        <ion-select-option *ngFor="let student of students" [value]="student">{{student.firstname + ' ' + student.lastname}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="courses && courses.length && !course">
+      <ion-label>Course</ion-label>
+      <ion-select [compareWith]="compareCourseWith" formControlName="courseid" placeholder="Select course" required multiple='false'>
+        <ion-select-option *ngFor="let course of courses" [value]="course">{{course.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button *ngIf="(!course && courses && courses.length) || (!student && students && students.length)" type="submit" color="dark">Enroll Student</ion-button> 
+  </form>
+</ion-content>

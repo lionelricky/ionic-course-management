@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { of as observableOf, Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClient,HttpEventType,HttpHeaders  } from '@angular/common/http';
-import { Course } from '../models/course';
 import { Enrollment } from '../models/enrollment';
 
 @Injectable({
@@ -14,6 +13,7 @@ export class EnrollmentService {
 
   enrollment : Observable<Enrollment[]>;
   message: string = "";
+  enrollmentCtrl: number[] = [];
 
   initializeCoursesFromApi(){
     const enrollmentApi = this.http.get<any>('http://www.rik-media.com/enrollment.php')
@@ -36,6 +36,16 @@ export class EnrollmentService {
 
   getEnrollmentByStudentId(id: number){
     return this.enrollment.pipe(map((items: Enrollment[]) => items.filter((item: { id: number; }) => item.id == id)));
+  }
+
+  setup(sId:number, cId:number){
+    this.enrollmentCtrl = [];
+    this.enrollmentCtrl.push(sId);
+    this.enrollmentCtrl.push(cId);
+  }
+
+  getSetup(){
+    return this.enrollmentCtrl;
   }
 
   setMessage(message: string){

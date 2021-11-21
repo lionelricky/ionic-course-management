@@ -25,9 +25,9 @@ export class StudentdetailsPage implements OnInit {
     private toastController: ToastController) { }
 
   studentForm = new FormGroup({
-    firstname: new FormControl(''),
-    lastname: new FormControl(''),
-    dob: new FormControl(''),
+    firstname: new FormControl('',[Validators.required]),
+    lastname: new FormControl('',[Validators.required]),
+    dob: new FormControl('',[Validators.required]),
   });
   
   student: Student;
@@ -69,17 +69,22 @@ export class StudentdetailsPage implements OnInit {
   }
 
   updateStudent(){
-    this.updating = true;
-    let message =  "Success! Student created.";
-    const fd = new FormData();
-    if(this.id != "0"){
-      fd.append('id', this.id.toString());
-      message =  "Success! Student updated.";
+    if (this.studentForm.valid) {
+      this.updating = true;
+      let message =  "Success! Student created.";
+      const fd = new FormData();
+      if(this.id != "0"){
+        fd.append('id', this.id.toString());
+        message =  "Success! Student updated.";
+      }
+      fd.append('firstname', this.studentForm.value['firstname']);
+      fd.append('lastname', this.studentForm.value['lastname']);
+      fd.append('dateofbirth', this.studentForm.value['dob']);
+      this.postData(fd, message);
+    } else {
+      this.message = "Please enter all required fields";
+      this.presentToast();
     }
-    fd.append('firstname', this.studentForm.value['firstname']);
-    fd.append('lastname', this.studentForm.value['lastname']);
-    fd.append('dateofbirth', this.studentForm.value['dob']);
-    this.postData(fd, message);
   }
 
   deleteStudent(id){
@@ -107,7 +112,6 @@ export class StudentdetailsPage implements OnInit {
       }
     });
   }
-
 
   async presentToast() {
     const toast = await this.toastController.create({

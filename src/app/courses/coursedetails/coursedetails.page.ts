@@ -27,9 +27,9 @@ export class CoursedetailsPage implements OnInit {
     private toastController: ToastController) { }
 
   courseForm = new FormGroup({
-    name: new FormControl(''),
-    time: new FormControl(''),
-    length: new FormControl(''),
+    name: new FormControl('',[Validators.required]),
+    time: new FormControl('',[Validators.required]),
+    length: new FormControl('',[Validators.required]),
   });
 
   course: Course;
@@ -57,17 +57,22 @@ export class CoursedetailsPage implements OnInit {
   }
 
   updateCourse(){
-    this.updating = true;
-    let message =  "Success! Student created.";
-    const fd = new FormData();
-    if(this.id != "0"){
-      fd.append('id', this.id.toString());
-      message =  "Success! Course updated.";
+    if (this.courseForm.valid) {
+      this.updating = true;
+      let message =  "Success! Student created.";
+      const fd = new FormData();
+      if(this.id != "0"){
+        fd.append('id', this.id.toString());
+        message =  "Success! Course updated.";
+      }
+      fd.append('name', this. courseForm.value['name']);
+      fd.append('time', this.courseForm.value['time']);
+      fd.append('length', this.courseForm.value['length']);
+      this.postData(fd, message);
+    } else {
+      this.message = "Please enter all required fields";
+      this.presentToast();
     }
-    fd.append('name', this. courseForm.value['name']);
-    fd.append('time', this.courseForm.value['time']);
-    fd.append('length', this.courseForm.value['length']);
-    this.postData(fd, message);
   }
 
   deleteCourse(id){

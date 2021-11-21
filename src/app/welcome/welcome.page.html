@@ -8,5 +8,45 @@
 </ion-header>
 
 <ion-content>
-  
+  <ion-row>
+  <ion-col class="box">
+    <ion-row class="row">
+      <ion-col>
+        <ion-icon name="person"></ion-icon>
+      </ion-col>
+      <ion-col class="title">
+        Students
+      </ion-col>
+      <ion-col class="stat">  
+        {{students.length}} 
+      </ion-col>
+    </ion-row>
+  </ion-col>
+  <ion-col class="box">
+    <ion-row class="row">
+      <ion-col>
+        <ion-icon name="school"></ion-icon>
+      </ion-col>
+      <ion-col class="title">
+        Courses
+      </ion-col>
+      <ion-col class="stat">  
+        {{courses.length}} 
+      </ion-col>
+    </ion-row>
+  </ion-col>
+</ion-row>
+
+<div class="listing" *ngFor="let class of classes; let i = index">
+  <div class="list-title">
+    <p>{{class}}</p> 
+    <div *ngFor="let enrollment of enrollments; let i = index">
+      <ion-item color="light" class="list-item" *ngIf="class == enrollment.name">
+        {{enrollment.firstname}} {{enrollment.lastname}}
+      </ion-item>
+    </div>
+  </div>
+</div>
+
+
 </ion-content>

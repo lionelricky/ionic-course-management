@@ -1,0 +1,35 @@
+.box{
+    background: rgb(236, 242, 245);
+    font-size: 1.5rem;
+    box-shadow: 0px 5px 5px rgb(0 0 0 / 15%);
+    .title{
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    .stat{
+        font-size: 2rem;
+    }
+  }
+
+  .row{
+    align-items: center;
+    text-align: center;
+  }
+
+  .listing {
+    background: rgb(236, 242, 245);
+    border: 1px solid #e1e1e1;
+    padding: 5px;
+    margin: 10px;
+
+    .list-title{
+      font-weight:600;
+      margin-left: 5px;
+    }
+
+    .list-item{
+      font-weight: 400;
+    }
+  }
+  
+  
