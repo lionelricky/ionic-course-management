@@ -37,7 +37,8 @@
     <ion-list *ngFor="let e of enrollment">
       <ion-item style="padding-right: 20px;">
         <ion-label>
-          <h2>{{e.name}}</h2>
+          <strong>{{e.name}}</strong> &nbsp; 
+          <ion-button (click)="leaveClass(e.id, e.courseid)" color="danger"><ion-icon name="close"></ion-icon>Leave</ion-button>  
         </ion-label>
       </ion-item>
     </ion-list>

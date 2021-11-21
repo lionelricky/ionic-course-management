@@ -37,12 +37,10 @@ export class StudentdetailsPage implements OnInit {
   id:string;
   updating:Boolean = false;
   pageMode = "Edit"
+  serverStudent = "http://www.rik-media.com/students.php" 
+  serverEnrolment = "http://www.rik-media.com/enrollment.php"
 
-  
   ngOnInit() {
-    // if (!this.authenticateService.isAuthenticated()){
-    //   this.router.navigate(['login']);
-    // }
     this.id = this.route.snapshot.paramMap.get('id');
     this.pageMode = this.studentService.getPageMode();
     if(this.id != "0"){
@@ -80,7 +78,7 @@ export class StudentdetailsPage implements OnInit {
       fd.append('firstname', this.studentForm.value['firstname']);
       fd.append('lastname', this.studentForm.value['lastname']);
       fd.append('dateofbirth', this.studentForm.value['dob']);
-      this.postData(fd, message);
+      this.postData(this.serverStudent, fd, message);
     } else {
       this.message = "Please enter all required fields";
       this.presentToast();
@@ -92,11 +90,20 @@ export class StudentdetailsPage implements OnInit {
     fd.append('delete', 'delete')
     fd.append('id', id.toString());
     const message = "Success! Student deleted."
-    this.postData(fd, message);
+    this.postData(this.serverStudent, fd, message);
   }
 
-  postData(fd:FormData, message: string){
-    this.apiService.postToApi('http://www.rik-media.com/students.php', fd).subscribe(events =>
+  leaveClass(id:number, courseid:number){
+    const message = "Student has left course."
+    const fd = new FormData();
+    fd.append('delete', 'delete')
+    fd.append('studentid', id.toString());
+    fd.append('courseid', courseid.toString());
+    this.postData(this.serverEnrolment, fd, message)
+  }
+
+  postData(server:string ,fd:FormData, message: string){
+    this.apiService.postToApi(server, fd).subscribe(events =>
     {
       if (events.type == HttpEventType.Response)
       {
@@ -112,7 +119,6 @@ export class StudentdetailsPage implements OnInit {
       }
     });
   }
-
 
   async presentToast() {
     const toast = await this.toastController.create({
