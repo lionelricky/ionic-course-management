@@ -4,9 +4,6 @@ import { Router } from '@angular/router';
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import { faGraduationCap } from '@fortawesome/free-solid-svg-icons'
 import { faSchool } from '@fortawesome/free-solid-svg-icons'
-import { StudentService } from './service/student.service';
-import { CourseService } from './service/course.service';
-import { EnrollmentService } from './service/enrollment.service';
 import { ApiService } from './service/api.service';
 
 @Component({
@@ -26,9 +23,6 @@ export class AppComponent {
   ];
   constructor(private router: Router, 
     public menuCtrl: MenuController, 
-    private studentService: StudentService, 
-    private courseService: CourseService,
-    private enrollmentService: EnrollmentService,
     private apiService: ApiService) {}
 
   ngOnInit(){

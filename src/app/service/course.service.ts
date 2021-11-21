@@ -23,7 +23,7 @@ export class CourseService {
               return a.name.localeCompare(b.name) }
               )));
         });
-        this.courses = courseApi;
+    this.courses = courseApi;
   }
 
   getAllCourses(){

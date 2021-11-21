@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
       this.router.navigateByUrl('/welcome');
     }
   }
-
+  
   async presentToast() {
     const toast = await this.toastController.create({
       message: this.message,
@@ -47,6 +47,4 @@ export class LoginPage implements OnInit {
     });
     toast.present();
   }
-
-
 }

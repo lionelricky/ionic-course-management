@@ -101,7 +101,6 @@ export class CoursedetailsPage implements OnInit {
     });
   }
 
-
   getDecimals(e){
     let number = this.decimalpipe.transform(e.target.value, '1.2-2');
     this.courseForm.get('length').setValue(number);
