@@ -7,6 +7,7 @@ import { faSchool } from '@fortawesome/free-solid-svg-icons'
 import { StudentService } from './service/student.service';
 import { CourseService } from './service/course.service';
 import { EnrollmentService } from './service/enrollment.service';
+import { ApiService } from './service/api.service';
 
 @Component({
   selector: 'app-root',
@@ -14,8 +15,6 @@ import { EnrollmentService } from './service/enrollment.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  
-  isAutenticated:boolean = true;
   fausergraduate = faUserGraduate;
   fagraduationcap = faGraduationCap;
   faschool = faSchool;
@@ -29,17 +28,14 @@ export class AppComponent {
     public menuCtrl: MenuController, 
     private studentService: StudentService, 
     private courseService: CourseService,
-    private enrollmentService: EnrollmentService) {}
+    private enrollmentService: EnrollmentService,
+    private apiService: ApiService) {}
 
   ngOnInit(){
-    if(!this.isAutenticated)
+    if(!this.apiService.validateAuthentication())
     {
       this.router.navigateByUrl("/login")
       this.menuCtrl.enable(false, 'mainMenu');
-    } else{
-      this.studentService.initializeStudentsFromApi();
-      this.courseService.initializeCoursesFromApi();
-      this.enrollmentService.initializeCoursesFromApi()
-    }
+    } 
   }
 }

@@ -5,6 +5,9 @@ import { CourseService } from '../service/course.service';
 import { EnrollmentService } from '../service/enrollment.service';
 import { Course } from '../models/course';
 import { Enrollment } from '../models/enrollment';
+import { MenuController } from '@ionic/angular';
+import { ApiService } from '../service/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-welcome',
@@ -13,7 +16,12 @@ import { Enrollment } from '../models/enrollment';
 })
 export class WelcomePage implements OnInit {
 
-  constructor(private studentService: StudentService, private courseService: CourseService, private enrollmentService: EnrollmentService) { }
+  constructor(private studentService: StudentService, 
+    private courseService: CourseService, 
+    private enrollmentService: EnrollmentService, 
+    private menuCtrl: MenuController,
+    private apiService: ApiService,
+    private router: Router) { }
 
   students:Student[] = [];
   courses:Course[] = [];
@@ -21,6 +29,18 @@ export class WelcomePage implements OnInit {
   classes: string[];
 
   ngOnInit() {
+    if(!this.apiService.validateAuthentication()){
+      this.router.navigateByUrl('/login');
+    }
+
+    this.menuCtrl.enable(true);
+    //initialize
+    this.studentService.initializeStudentsFromApi();
+    this.courseService.initializeCoursesFromApi();
+    this.enrollmentService.initializeCoursesFromApi()
+  }
+
+  ionViewWillEnter(){
     this.studentService.getAllStudents().subscribe(studentData => {
       this.students = studentData;
     });

@@ -4,6 +4,7 @@ import { Student } from '../models/student';
 import { StudentService } from 'src/app/service/student.service';
 import { ToastController } from '@ionic/angular';
 import { EnrollmentService } from '../service/enrollment.service';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-students',
@@ -15,7 +16,8 @@ export class StudentsPage implements OnInit{
   constructor(private router: Router, 
     private studentService: StudentService, 
     private toastController: ToastController,
-    private enrollmentService: EnrollmentService) { }
+    private enrollmentService: EnrollmentService,
+    private apiService: ApiService) { }
 
   students:Student[];
   filteredStudents: Student[];
@@ -24,6 +26,10 @@ export class StudentsPage implements OnInit{
   message:string = "";
 
   ngOnInit() {
+    if(!this.apiService.validateAuthentication()){
+      this.router.navigateByUrl('/login');
+    }
+
     this.getAllStudentData();
   }
 

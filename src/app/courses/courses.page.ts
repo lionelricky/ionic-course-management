@@ -5,6 +5,7 @@ import { HttpClient,HttpEventType,HttpHeaders  } from '@angular/common/http';
 import { Course } from '../models/Course';
 import { CourseService } from 'src/app/service/course.service';
 import { EnrollmentService } from '../service/enrollment.service';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-courses',
@@ -16,13 +17,17 @@ export class CoursesPage implements OnInit {
   constructor(private router: Router, 
     private http: HttpClient, 
     private courserService: CourseService,
-    private enrollmentService: EnrollmentService) { }
+    private enrollmentService: EnrollmentService,
+    private apiService: ApiService) { }
 
   courses: Course[];
   filteredCourses: Course[];
   noCourses: boolean = true;
 
   ngOnInit() {
+    if(!this.apiService.validateAuthentication()){
+      this.router.navigateByUrl('/login');
+    }
     this.getAllCourseData();
   }
 

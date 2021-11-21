@@ -6,31 +6,33 @@
     <ion-title>Courses</ion-title>
   </ion-toolbar>
 </ion-header>
+<div class="margin-app">
+  <ion-toolbar>
+    <ion-searchbar (ionChange)="filterCourses($event)" debounce="500" animated placeholder="Find class by name"></ion-searchbar>
+  </ion-toolbar>
+</div>
+<ion-content>
+  <div *ngIf="noCourses">No courses available.</div>
+  <ion-list *ngFor="let p of filteredCourses; let i = index">
+    <ion-item style="padding-right: 20px;">
+      <ion-avatar slot="start">
+        <img src="../../assets/avatarbook.jpg">
+      </ion-avatar>
+      <ion-label>
+        <h2>{{p.name}} </h2>
+        <P>Starts At: {{p.time}}</P>
+        <p>Class length: {{p.length}} hrs</p>
+        <ion-button (click)="navigateToUrl(p.id)" color="primary">Edit</ion-button>
+        <ion-button (click)="navigateToEnrollment(p.id)" color="dark">Enroll Students</ion-button> 
+      </ion-label>
+    </ion-item>
+  </ion-list>
 
-  <ion-content>
-    <div style="margin: 10px;"></div>
-    <div *ngIf="noCourses">No courses available.</div>
-    <ion-list *ngFor="let p of filteredCourses; let i = index">
-      <ion-item style="padding-right: 20px;">
-        <ion-avatar slot="start">
-          <img src="../../assets/avatar.png">
-        </ion-avatar>
-        <ion-label>
-          <h2>{{p.name}} </h2>
-          <P>Starts At: {{p.time}}</P>
-          <p>Class length: {{p.length}} hrs</p>
-          <ion-button (click)="navigateToUrl(p.id)" color="primary">Edit</ion-button>
-          <ion-button (click)="navigateToEnrollment(p.id)" color="dark">Enroll Students</ion-button> 
-        </ion-label>
-      </ion-item>
-  
-      
-    </ion-list>
-  
-    <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="padding: 10px;">
-      <ion-fab-button (click)="navigateToUrl(0)">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
-  </ion-content>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" style="padding: 10px;">
+    <ion-fab-button (click)="navigateToUrl(0)">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
 

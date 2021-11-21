@@ -113,6 +113,7 @@ export class StudentdetailsPage implements OnInit {
     });
   }
 
+
   async presentToast() {
     const toast = await this.toastController.create({
       message: this.message,

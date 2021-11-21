@@ -26,4 +26,6 @@
     </ion-item>
     <ion-button *ngIf="(!course && courses && courses.length) || (!student && students && students.length)" type="submit" color="dark">Enroll Student</ion-button> 
   </form>
+  <ion-item color="warning" *ngIf="course && students && !(students.length)">No students to add</ion-item>
+  <ion-item color="warning" *ngIf="student && courses && !(courses.length)">No coursess to add</ion-item>
 </ion-content>
