@@ -23,15 +23,16 @@
       <ion-input (ionBlur)="getDecimals($event)" type="number" formControlName="length" required step="0.5"></ion-input>
     </ion-item>
     <ion-button type="submit" color="primary">Submit</ion-button>
-    <ion-button (click)="deleteCourse(id)" color="danger">Delete</ion-button> 
-    <ion-button (click)="returnToStudentsPage()" color="secondary">Go back</ion-button>
+    <ion-button *ngIf="course" (click)="deleteCourse(id)" color="danger">Delete</ion-button> 
+    <ion-button (click)="returnToPage()" color="secondary">Go back</ion-button>
   </form>
   <div *ngIf="enrollment && enrollment.length">
     <h3 style="padding: 0 15px;">Enrolled students</h3>
     <ion-list *ngFor="let e of enrollment">
       <ion-item style="padding-right: 20px;">
         <ion-label>
-          <h2>{{e.firstname}} {{e.lastname}}</h2>
+          <strong>{{e.firstname}} {{e.lastname}}</strong> &nbsp;
+          <ion-button (click)="leaveClass(e.id, e.courseid)" color="danger"><ion-icon name="close"></ion-icon>Leave</ion-button>  
         </ion-label>
       </ion-item>
     </ion-list>

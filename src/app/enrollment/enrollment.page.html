@@ -25,6 +25,7 @@
       </ion-select>
     </ion-item>
     <ion-button *ngIf="(!course && courses && courses.length) || (!student && students && students.length)" type="submit" color="dark">Enroll Student</ion-button> 
+    <ion-button color="secondary" (click)='navigateToPage()'> Back </ion-button> 
   </form>
   <ion-item color="warning" *ngIf="!checkloading() && course && students && !(students.length)">No students to add</ion-item>
   <ion-item color="warning" *ngIf="!checkloading() && student && courses && !(courses.length)">No coursess to add</ion-item>

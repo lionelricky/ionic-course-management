@@ -68,7 +68,7 @@ export class CoursedetailsPage implements OnInit {
       fd.append('name', this. courseForm.value['name']);
       fd.append('time', this.courseForm.value['time']);
       fd.append('length', this.courseForm.value['length']);
-      this.postData(fd, message);
+      this.postData('http://www.rik-media.com/courses.php', fd, message);
     } else {
       this.message = "Please enter all required fields";
       this.presentToast();
@@ -80,11 +80,11 @@ export class CoursedetailsPage implements OnInit {
     fd.append('delete', 'delete')
     fd.append('id', id.toString());
     const message = "Success! Course deleted."
-    this.postData(fd, message);
+    this.postData('http://www.rik-media.com/courses.php', fd, message);
   }
 
-  postData(fd:FormData, message: string){
-    this.apiService.postToApi('http://www.rik-media.com/courses.php', fd).subscribe(events =>
+  postData(server:string, fd:FormData, message: string){
+    this.apiService.postToApi(server, fd).subscribe(events =>
     {
       if (events.type == HttpEventType.Response)
       {
@@ -96,7 +96,7 @@ export class CoursedetailsPage implements OnInit {
           this.message = "An error occured, please try again.";
         }
         this.presentToast();
-        this.returnToStudentsPage();
+        this.returnToPage();
       }
     });
   }
@@ -115,7 +115,15 @@ export class CoursedetailsPage implements OnInit {
     toast.present();
   }
 
-  returnToStudentsPage(){
+  leaveClass(id:number, courseid:number){
+    const fd = new FormData();
+    fd.append('delete', 'delete')
+    fd.append('studentid', id.toString());
+    fd.append('courseid', courseid.toString());
+    this.postData('http://rik-media.com/enrollment.php', fd, "Student has left course.")
+  }
+
+  returnToPage(){
     this.router.navigateByUrl('/courses');
   }
 }

@@ -63,12 +63,10 @@ export class StudentsPage implements OnInit{
   }
 
   getAllStudentData(){
-    console.log('loader start')
     this.studentService.getAllStudents().subscribe(studentData => {
       this.students = studentData;
       this.filteredStudents = studentData;
       this.noStudents = !studentData.length;
-      console.log('loader end');
     });
   }
 

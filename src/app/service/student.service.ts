@@ -17,7 +17,6 @@ export class StudentService {
   pageMode: string = "Edit";
 
   initializeStudentsFromApi(){
-    console.log("initialize student");
     const studentsApi = this.http.get<any>('http://www.rik-media.com/students.php')
         .pipe(items => {
             return items.pipe(map((items: Student[]) => items.sort(
@@ -29,7 +28,6 @@ export class StudentService {
   }
 
   getAllStudents(){
-    this.students.subscribe(x => console.log(x));
     return this.students;
   }
 

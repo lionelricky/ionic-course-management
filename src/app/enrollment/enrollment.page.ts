@@ -191,4 +191,15 @@ export class EnrollmentPage implements OnInit {
      });
     }
   }
+
+  navigateToPage(){
+    if(this.student){
+      this.router.navigateByUrl("/students")
+    }
+    if(this.course){
+      this.router.navigateByUrl("/courses")
+    }
+  }
+
+
 }
