@@ -27,6 +27,9 @@ export class WelcomePage implements OnInit {
   courses:Course[] = [];
   enrollments:Enrollment[] =[];
   classes: string[];
+  loadingEnrollment:boolean = true;
+  loadingCourses:boolean = true;
+  loadingStudents:boolean = true;
 
   ngOnInit() {
     if(!this.apiService.validateAuthentication()){
@@ -41,16 +44,27 @@ export class WelcomePage implements OnInit {
   }
 
   ionViewWillEnter(){
+    
     this.studentService.getAllStudents().subscribe(studentData => {
       this.students = studentData;
+      this.loadingStudents = false;
+      this.checkLoadedData()
     });
     this.courseService.getAllCourses().subscribe(studentData => {
       this.courses = studentData;
+      this.loadingCourses = false;
+      this.checkLoadedData()
     });
     this.enrollmentService.getAllEnrollment().subscribe(enrollmentData => {
       this.enrollments = enrollmentData;
       this.classes = enrollmentData.map(item => item.name).filter((value, index, self) => self.indexOf(value) === index);
+      this.loadingEnrollment = false;
+      this.checkLoadedData()
     });
   }
 
+  checkLoadedData():boolean{
+    return this.loadingCourses || this.loadingEnrollment || this.loadingStudents;
+  }
 }
+

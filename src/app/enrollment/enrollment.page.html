@@ -11,7 +11,7 @@
   <ion-item>
     {{typeSelected}}
   </ion-item>
-  <form [formGroup]="enrollmentForm" (ngSubmit)="updateEnrollment()" novalidate>
+  <form [formGroup]="enrollmentForm" (ngSubmit)="checkData()" novalidate>
     <ion-item *ngIf="students && students.length && !student">
       <ion-label>Student</ion-label>
       <ion-select [compareWith]="compareStudentWith" formControlName="studentid" placeholder="Select student" required multiple='false'>
@@ -26,6 +26,7 @@
     </ion-item>
     <ion-button *ngIf="(!course && courses && courses.length) || (!student && students && students.length)" type="submit" color="dark">Enroll Student</ion-button> 
   </form>
-  <ion-item color="warning" *ngIf="course && students && !(students.length)">No students to add</ion-item>
-  <ion-item color="warning" *ngIf="student && courses && !(courses.length)">No coursess to add</ion-item>
+  <ion-item color="warning" *ngIf="!checkloading() && course && students && !(students.length)">No students to add</ion-item>
+  <ion-item color="warning" *ngIf="!checkloading() && student && courses && !(courses.length)">No coursess to add</ion-item>
+  <ion-item color="light" *ngIf="checkloading()"><ion-spinner name='lines-small'></ion-spinner> LOADING </ion-item>
 </ion-content>

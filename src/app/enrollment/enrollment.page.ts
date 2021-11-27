@@ -9,6 +9,7 @@ import { Course } from '../models/course';
 import { FormGroup, FormBuilder, Validators, FormControl } from "@angular/forms";
 import { ApiService } from '../service/api.service';
 import { HttpEventType } from '@angular/common/http';
+import { Enrollment } from '../models/enrollment';
 
 @Component({
   selector: 'app-enrollment',
@@ -33,10 +34,13 @@ export class EnrollmentPage implements OnInit {
     setupCtrl: number[] = [];
     students: Student[] = [];
     courses: Course[]= [];
+    enrollments:number[]=[];
     course: Course;
     student: Student;
     typeSelected: string;
     message: string;
+    loadStudents:boolean = true;
+    loadCourse:boolean = true;
 
   ngOnInit() {
     // setupCtrl is [studentid,courseid]
@@ -62,28 +66,37 @@ export class EnrollmentPage implements OnInit {
         this.typeSelected = courseData.name;
       });
     }
+  }
 
+  ionViewDidEnter(){
     this.courseService.getAllCourses().subscribe(courseData => {
-        if(this.student){
-          let enrollments:number[]=[];
-          this.enrollmentService.getEnrollmentByStudentId(Number(this.student.id)).subscribe(enrollmentData => {
-             enrollments = enrollmentData.map(x => x.courseid);
-             this.courses = courseData.filter(x => !enrollments.includes(x.id));
-          });
-        } else {
-          this.courses = courseData;
-        }
-      });
+      this.loadCourse = true;
+      if(this.student){
+        this.enrollmentService.getEnrollmentByStudentId(Number(this.student.id)).subscribe(enrollmentData => {
+           this.enrollments = enrollmentData.map(x => x.courseid);
+           this.courses = courseData.filter(x => !this.enrollments.includes(x.id));
+           this.loadCourse = false;
+           this.checkloading();
+        });
+      } else {
+        this.courses = courseData;
+        this.loadCourse = false;
+        this.checkloading();
+      }
+    });
 
     this.studentService.getAllStudents().subscribe(studentData => {
       if(this.course){
-        let enrollments:number[]=[];
         this.enrollmentService.getEnrollmentByCourseId(Number(this.course.id)).subscribe(enrollmentData => {
-           enrollments = enrollmentData.map(x => x.id);
-           this.students = studentData.filter(x => !enrollments.includes(x.id));
+          this.enrollments = enrollmentData.map(x => x.id);
+          this.students = studentData.filter(x => !this.enrollments.includes(x.id));
+          this.loadStudents = false;
+          this.checkloading();
         });
       } else {
         this.students = studentData;
+        this.loadStudents = false;
+        this.checkloading();
       }
     });
   }
@@ -96,15 +109,19 @@ export class EnrollmentPage implements OnInit {
     return o1 && o2 ? o1.id === o2.id : o1 === o2;
   }
 
+  checkloading() {
+    return this.loadCourse || this.loadStudents;
+  }
+
   updateEnrollment(){
+    let message = "Success! Enrollment updated.";
     if (this.enrollmentForm.valid) {
-      let message =  "Success! Enrollment updated.";
       const fd = new FormData();
-      if(this.setupCtrl[0]){
-        fd.append('studentid', this.setupCtrl[0].toString());
+      if(this.student){
+        fd.append('studentid', this.student.id.toString());
         fd.append('courseid', this.enrollmentForm.value['courseid'].id);
-      } else if(this.setupCtrl[1]){
-        fd.append('courseid', this.setupCtrl[1].toString());
+      } else if(this.course){
+        fd.append('courseid', this.course.id.toString());
         fd.append('studentid', this.enrollmentForm.value['studentid'].id);
       } else {
         fd.append('studentid', this.enrollmentForm.value['studentid'].id);
@@ -123,22 +140,55 @@ export class EnrollmentPage implements OnInit {
               this.router.navigateByUrl('/welcome')
           }else {
             this.message = "An error occured, please try again.";
+            this.presentToast('danger');
           }
         }
       });
     } else {
       this.message = "Please enter all required fields";
-      this.presentToast();
+      this.presentToast('danger');
     }
   }
 
-  async presentToast() {
+  async presentToast(color:string = null) {
+    if(!color){
+      color = 'primary';
+    }
     const toast = await this.toastController.create({
       message: this.message,
-      color: 'primary',
+      color: color,
       duration: 2000
     });
     toast.present();
   }
 
+  checkData() {
+    let enrollments:number[] = [];
+    this.message = "Student already enrolled"
+    if(this.course){
+      let studentid = this.enrollmentForm.value['studentid'].id;
+      this.enrollmentService.getEnrollmentByCourseId(Number(this.course.id)).subscribe(enrollmentData => {
+        enrollments = enrollmentData.map(x => x.id);
+        let isEnrolled = enrollments.filter(x => x == studentid).length;
+        if(isEnrolled){
+          this.presentToast('danger');
+        } else {
+          this.updateEnrollment();
+        }
+     });
+    }
+
+    if(this.student){
+      let courseid = this.enrollmentForm.value['courseid'].id
+      this.enrollmentService.getEnrollmentByStudentId(Number(this.student.id)).subscribe(enrollmentData => {
+        enrollments = enrollmentData.map(x => x.courseid);
+        let isEnrolled = enrollments.filter(x => x == courseid).length;
+        if(isEnrolled){
+          this.presentToast('danger')
+        } else {
+          this.updateEnrollment();
+        }
+     });
+    }
+  }
 }

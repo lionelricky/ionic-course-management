@@ -59,7 +59,7 @@ export class CoursedetailsPage implements OnInit {
   updateCourse(){
     if (this.courseForm.valid) {
       this.updating = true;
-      let message =  "Success! Student created.";
+      let message =  "Success! Course created.";
       const fd = new FormData();
       if(this.id != "0"){
         fd.append('id', this.id.toString());

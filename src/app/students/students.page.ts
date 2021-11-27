@@ -5,6 +5,8 @@ import { StudentService } from 'src/app/service/student.service';
 import { ToastController } from '@ionic/angular';
 import { EnrollmentService } from '../service/enrollment.service';
 import { ApiService } from '../service/api.service';
+import { CompileShallowModuleMetadata } from '@angular/compiler';
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-students',
@@ -29,8 +31,6 @@ export class StudentsPage implements OnInit{
     if(!this.apiService.validateAuthentication()){
       this.router.navigateByUrl('/login');
     }
-
-    this.getAllStudentData();
   }
 
   ionViewDidEnter(){
@@ -63,10 +63,12 @@ export class StudentsPage implements OnInit{
   }
 
   getAllStudentData(){
+    console.log('loader start')
     this.studentService.getAllStudents().subscribe(studentData => {
       this.students = studentData;
       this.filteredStudents = studentData;
       this.noStudents = !studentData.length;
+      console.log('loader end');
     });
   }
 
