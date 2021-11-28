@@ -27,6 +27,7 @@ export class LoginPage implements OnInit {
 
   login(){
     if (this.loginForm.valid) {
+      console.log(this.loginForm.getRawValue());
       const username = this.loginForm.value['username'];
       const password = this.loginForm.value['password'];
       this.apiService.getAuthentication(username, password)

@@ -11,31 +11,25 @@ export class EnrollmentService {
 
   constructor(private http: HttpClient) { }
 
-  enrollment : Observable<Enrollment[]>;
   message: string = "";
   enrollmentCtrl: number[] = [];
 
-  initializeCoursesFromApi(){
-    const enrollmentApi = this.http.get<any>('http://www.rik-media.com/enrollment.php')
+  getAllEnrollment(){
+    return this.http.get<any>('http://www.rik-media.com/enrollment.php')
         .pipe(items => {
             return items.pipe(map((items: Enrollment[]) => items.sort(
                 (a, b) => {
               return a.name.localeCompare(b.name) }
               )));
         });
-        this.enrollment = enrollmentApi;
-  }
-
-  getAllEnrollment(){
-    return this.enrollment;
   }
 
   getEnrollmentByCourseId(id: number){
-    return this.enrollment.pipe(map((items: Enrollment[]) => items.filter((item: { courseid: number; }) => item.courseid == id)));
+    return this.getAllEnrollment().pipe(map((items: Enrollment[]) => items.filter((item: { courseid: number; }) => item.courseid == id)));
   }
 
   getEnrollmentByStudentId(id: number){
-    return this.enrollment.pipe(map((items: Enrollment[]) => items.filter((item: { id: number; }) => item.id == id)));
+    return this.getAllEnrollment().pipe(map((items: Enrollment[]) => items.filter((item: { id: number; }) => item.id == id)));
   }
 
   setup(sId:number, cId:number){

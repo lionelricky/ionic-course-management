@@ -10,28 +10,20 @@ import { Course } from '../models/course';
 export class CourseService {
 
   constructor(private http: HttpClient) { }
-
-  courses : Observable<Course[]>;
-  course: Course;
   message: string = "";
 
-  initializeCoursesFromApi(){
-    const courseApi = this.http.get<any>('http://www.rik-media.com/courses.php')
+  getAllCourses(){
+   return this.http.get<any>('http://www.rik-media.com/courses.php')
         .pipe(items => {
             return items.pipe(map((items: Course[]) => items.sort(
                 (a, b) => {
               return a.name.localeCompare(b.name) }
               )));
         });
-    this.courses = courseApi;
-  }
-
-  getAllCourses(){
-    return this.courses;
   }
 
   getCoursesById(id: number){
-    return this.courses.pipe(map((items: Course[]) => items.filter((item: { id: any; }) => item.id == id)[0]));
+    return this.getAllCourses().pipe(map((items: Course[]) => items.filter((item: { id: any; }) => item.id == id)[0]));
   }
 
   setMessage(message: string){

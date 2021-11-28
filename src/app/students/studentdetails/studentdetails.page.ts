@@ -68,6 +68,7 @@ export class StudentdetailsPage implements OnInit {
 
   updateStudent(){
     if (this.studentForm.valid) {
+      console.log(this.studentForm.getRawValue());
       this.updating = true;
       let message =  "Success! Student created.";
       const fd = new FormData();

@@ -1,12 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Student } from '../models/student';
 import { StudentService } from 'src/app/service/student.service';
 import { ToastController } from '@ionic/angular';
 import { EnrollmentService } from '../service/enrollment.service';
 import { ApiService } from '../service/api.service';
-import { CompileShallowModuleMetadata } from '@angular/compiler';
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 @Component({
   selector: 'app-students',
@@ -63,11 +61,10 @@ export class StudentsPage implements OnInit{
   }
 
   getAllStudentData(){
-    this.studentService.getAllStudents().subscribe(studentData => {
+   this.studentService.getAllStudents().subscribe(studentData => {
       this.students = studentData;
       this.filteredStudents = studentData;
       this.noStudents = !studentData.length;
     });
   }
-
 }

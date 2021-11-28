@@ -35,16 +35,10 @@ export class WelcomePage implements OnInit {
     if(!this.apiService.validateAuthentication()){
       this.router.navigateByUrl('/login');
     }
-
     this.menuCtrl.enable(true);
-    //initialize
-    this.studentService.initializeStudentsFromApi();
-    this.courseService.initializeCoursesFromApi();
-    this.enrollmentService.initializeCoursesFromApi()
   }
 
   ionViewWillEnter(){
-    
     this.studentService.getAllStudents().subscribe(studentData => {
       this.students = studentData;
       this.loadingStudents = false;
@@ -61,6 +55,7 @@ export class WelcomePage implements OnInit {
       this.loadingEnrollment = false;
       this.checkLoadedData()
     });
+    
   }
 
   checkLoadedData():boolean{
