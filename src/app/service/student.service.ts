@@ -17,7 +17,6 @@ export class StudentService {
   getAllStudents(){
     return this.http.get<any>('http://www.rik-media.com/students.php')
         .pipe(items => {
-          console.log('api students');
             return items.pipe(map((items: Student[]) => items.sort(
                 (a, b) => {
               return a.lastname.localeCompare(b.lastname) }
